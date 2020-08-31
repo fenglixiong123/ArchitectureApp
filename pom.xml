@@ -10,10 +10,10 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>multi-thread-base</module>
-        <module>multi-thread-common</module>
-        <module>multi-thread-two</module>
+        <module>architecture-common</module>
         <module>jvm-learn</module>
+        <module>multi-thread-base</module>
+        <module>multi-thread-two</module>
     </modules>
 
     <properties>
