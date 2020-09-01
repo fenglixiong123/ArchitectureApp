@@ -14,7 +14,6 @@
         <module>architecture-common</module>
         <module>architecture-jvm</module>
         <module>architecture-multi-thread</module>
-        <module>multi-thread-yangguo</module>
     </modules>
 
     <properties>
