@@ -10,10 +10,10 @@
     <packaging>pom</packaging>
 
     <modules>
+        <module>architecture-class-loader</module>
         <module>architecture-common</module>
-        <module>jvm-learn</module>
-        <module>multi-thread-base</module>
-        <module>multi-thread-wangwenjun</module>
+        <module>architecture-jvm</module>
+        <module>architecture-multi-thread</module>
         <module>multi-thread-yangguo</module>
     </modules>
 
