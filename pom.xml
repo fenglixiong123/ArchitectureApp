@@ -13,7 +13,8 @@
         <module>architecture-common</module>
         <module>jvm-learn</module>
         <module>multi-thread-base</module>
-        <module>multi-thread-two</module>
+        <module>multi-thread-wangwenjun</module>
+        <module>multi-thread-yangguo</module>
     </modules>
 
     <properties>
