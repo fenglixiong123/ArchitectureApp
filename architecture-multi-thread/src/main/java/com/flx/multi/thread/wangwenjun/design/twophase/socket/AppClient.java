@@ -26,7 +26,7 @@ public class AppClient extends Thread{
     public void run() {
         System.out.println(Thread.currentThread().getName()+" : i connected to "+socket.getInetAddress().getHostAddress()+":"+socket.getLocalPort());
         new SendMessageThread(socket,"ClientSendThread").start();
-//        new ReceiveMessageThread(socket,"ClientReceiveThread").start();
+        new ReceiveMessageThread(socket,"ClientReceiveThread").start();
     }
 
 

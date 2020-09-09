@@ -1,8 +1,6 @@
 package com.flx.multi.thread.wangwenjun.design.twophase.socket;
 
-import java.io.BufferedWriter;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
+import java.io.*;
 import java.net.Socket;
 
 /**
@@ -13,31 +11,26 @@ import java.net.Socket;
 public class SendMessageThread extends Thread{
 
     private final Socket socket;
-    private BufferedWriter bw;
 
     public SendMessageThread(Socket socket,String name) {
         super(name);
         this.socket = socket;
-        try {
-            bw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
     @Override
     public void run() {
+        BufferedReader br;
+        BufferedWriter bw;
         try {
             while (true){
-                synchronized (socket) {
-                    String message = Thread.currentThread().getName() + " Hello!";
-                    System.out.println(message);
-                    bw.write(message);
-//                    bw.flush();
-                    Thread.sleep(3000);
-                }
+                br = new BufferedReader(new InputStreamReader(System.in));
+                bw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
+                String message = br.readLine();
+                //注意细节 readLine()是阻塞式的，读取不到内容会一直阻塞，而且消息是以\n结束
+                bw.write(Thread.currentThread().getName() +"->"+ message + "\n");
+                bw.flush();
             }
-        } catch (IOException | InterruptedException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }

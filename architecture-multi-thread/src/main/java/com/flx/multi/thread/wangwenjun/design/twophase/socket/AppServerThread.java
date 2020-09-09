@@ -25,12 +25,12 @@ public class AppServerThread implements Runnable{
 //            BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
 //            bw.write(Thread.currentThread().getName()+socket.getRemoteSocketAddress()+" : Connection successful !");
 //            bw.flush();
-//            new SendMessageThread(socket,"ServerSendThread").start();
+            new SendMessageThread(socket,"ServerSendThread").start();
             new ReceiveMessageThread(socket,"ServerReceiveThread").start();
 //        } catch (IOException e) {
 //            this.running = false;
         }finally {
-            this.stop();
+//            this.stop();
         }
     }
 
