@@ -1,4 +1,4 @@
-package com.flx.multi.thread.wangwenjun.design.twophase;
+package com.flx.multi.thread.wangwenjun.design.twophase.socket;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -16,20 +16,18 @@ import java.util.concurrent.Executors;
  **/
 public class AppServer extends Thread{
 
-    private int port;
-    private final static int DEFAULT_PORT = 16779;
+    private final int port;
+
     private volatile boolean start = true;
 
     private List<AppServerThread> serverThreads = new ArrayList<>();
 
     private final ExecutorService executorService = Executors.newFixedThreadPool(10);
 
-    public AppServer(){
-        this(DEFAULT_PORT);
-    }
-
-    public AppServer(int port) {
+    public AppServer(String name,int port) {
+        super(name);
         this.port = port;
+        this.start();
     }
 
     @Override
@@ -39,7 +37,7 @@ public class AppServer extends Thread{
             System.out.println("ServerSocket started at "+serverSocket.getLocalPort());
             while (start){
                 Socket socketClient = serverSocket.accept();
-                System.out.println("AppClient linked "+socketClient.getInetAddress().getHostAddress()+":"+socketClient.getLocalPort());
+                System.out.println(Thread.currentThread().getName()+" : a client linked "+socketClient.getInetAddress().getHostAddress()+":"+socketClient.getLocalPort());
                 AppServerThread serverThread = new AppServerThread(socketClient);
                 serverThreads.add(serverThread);
                 executorService.execute(serverThread);
