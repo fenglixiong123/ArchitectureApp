@@ -29,11 +29,15 @@ public class ReceiveMessageThread extends Thread{
                 if (message == null) {
                     continue;
                 }
-                System.out.println(Thread.currentThread().getName() + " receive message : " + message);
+                //收到心跳信息则不处理
+                if(!message.equals("heartbeats")){
+                    System.out.println(Thread.currentThread().getName() + " receive message : " + message);
+                }
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
+        System.out.println(Thread.currentThread().getName()+" will exit!");
     }
 
 }

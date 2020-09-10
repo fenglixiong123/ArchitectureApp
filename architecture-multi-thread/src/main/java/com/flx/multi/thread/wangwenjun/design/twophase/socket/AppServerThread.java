@@ -20,18 +20,23 @@ public class AppServerThread implements Runnable{
 
     @Override
     public void run() {
-        try {
-//            System.out.println(Thread.currentThread().getName()+" : Start a serverThread to deal client socket : "+socket.getInetAddress().getHostAddress()+":"+socket.getLocalPort());
-//            BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
-//            bw.write(Thread.currentThread().getName()+socket.getRemoteSocketAddress()+" : Connection successful !");
-//            bw.flush();
-            new SendMessageThread(socket,"ServerSendThread").start();
-            new ReceiveMessageThread(socket,"ServerReceiveThread").start();
-//        } catch (IOException e) {
-//            this.running = false;
-        }finally {
-//            this.stop();
+
+        Thread s = new SendMessageThread(socket,"ServerSendThread");
+        Thread r = new ReceiveMessageThread(socket,"ServerReceiveThread");
+        //设置为守护线程，等此线程结束则守护线程一起结束
+        s.setDaemon(true);
+        r.setDaemon(true);
+        s.start();
+        r.start();
+        while (running){
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+                break;
+            }
         }
+        System.out.println(Thread.currentThread().getName()+" will exit!");
     }
 
     public void stop(){

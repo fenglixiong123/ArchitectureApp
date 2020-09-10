@@ -1,9 +1,5 @@
 package com.flx.multi.thread.wangwenjun.design.twophase.socket;
 
-import java.io.*;
-import java.net.ServerSocket;
-import java.net.Socket;
-
 /**
  * @Author Fenglixiong
  * @Create 2020/9/8 23:23
@@ -14,7 +10,15 @@ public class TomcatServer {
 
     public static void main(String[] args) {
 
-        new AppServer("Appserver",port);
+        AppServer s = new AppServer("Appserver",port);
+
+        try {
+            Thread.sleep(30000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        s.shutdown();
 
     }
 

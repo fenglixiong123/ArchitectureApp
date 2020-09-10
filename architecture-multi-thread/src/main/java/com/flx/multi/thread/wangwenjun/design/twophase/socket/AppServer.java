@@ -30,10 +30,12 @@ public class AppServer extends Thread{
         this.start();
     }
 
+    private ServerSocket serverSocket;
+
     @Override
     public void run() {
         try {
-            ServerSocket serverSocket = new ServerSocket(port);
+            serverSocket = new ServerSocket(port);
             System.out.println("ServerSocket started at "+serverSocket.getLocalPort());
             while (start){
                 Socket socketClient = serverSocket.accept();
@@ -51,8 +53,14 @@ public class AppServer extends Thread{
     }
 
     public void shutdown(){
+        System.out.println(Thread.currentThread().getName()+" shutdown!");
         this.start = false;
         this.interrupt();
+        try {
+            serverSocket.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 }
