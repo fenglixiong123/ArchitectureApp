@@ -21,7 +21,7 @@ import java.util.function.Supplier;
  *      boolean test(T t)
  *
  */
-public class LambdaAdvance {
+public class LambdaLearnB {
 
     public static void main(String[] args) {
 

@@ -1,6 +1,6 @@
 package com.flx.ark.java8.lambda;
 
-import com.flx.noodle.java8.lambda.task.Employee;
+import com.flx.ark.java8.lambda.task.Employee;
 
 import java.util.Comparator;
 import java.util.function.Consumer;
@@ -22,7 +22,7 @@ import java.util.function.Supplier;
  * ClassName::new
  *
  */
-public class LambdaEltimate {
+public class LambdaLearnC {
 
     public static void main(String[] args) {
         testOne();

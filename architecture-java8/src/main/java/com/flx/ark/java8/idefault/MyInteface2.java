@@ -4,7 +4,7 @@ public interface MyInteface2 {
 
     //默认实现方法
     default String getName(){
-        return "MyInteface2";
+        return "MyInterface2";
     }
 
 }

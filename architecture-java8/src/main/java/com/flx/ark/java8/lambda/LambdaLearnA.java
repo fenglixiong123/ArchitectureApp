@@ -1,9 +1,8 @@
 package com.flx.ark.java8.lambda;
 
-
-import com.flx.noodle.java8.lambda.service.MultiParamHasReturn;
-import com.flx.noodle.java8.lambda.service.NoneParamNoReturn;
-import com.flx.noodle.java8.lambda.service.OneParamNoReturn;
+import com.flx.ark.java8.lambda.service.MultiParamHasReturn;
+import com.flx.ark.java8.lambda.service.NoneParamNoReturn;
+import com.flx.ark.java8.lambda.service.OneParamNoReturn;
 
 /**
  * Lambda表达式基础语法：java8中引入一个新的操作符合->该操作符将表达式拆分为两部分
@@ -29,7 +28,7 @@ import com.flx.noodle.java8.lambda.service.OneParamNoReturn;
  * 函数式接口：接口中只有一个抽象方法的接口，称为函数式接口
  * 可以用@FunctionInterface修饰可以检查是否是函数式接口
  */
-public class LambdaBase {
+public class LambdaLearnA {
 
     public static void main(String[] args) {
 
@@ -65,7 +64,7 @@ public class LambdaBase {
      * 多个参数多条语句多个返回值
      */
     private static void testMultiParamHasReturn(){
-        MultiParamHasReturn multiParamHasReturn = (a,b)->{
+        MultiParamHasReturn multiParamHasReturn = (a, b)->{
             System.out.println("a:"+a+",b:"+b);
             return a+b;
         };

@@ -23,7 +23,7 @@ public class RunTest {
 
         System.out.println(name);
 
-        MyInterface.show();
+        MyInterface1.show();
 
     }
 
