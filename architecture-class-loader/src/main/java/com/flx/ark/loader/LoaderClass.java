@@ -17,7 +17,3 @@ public class LoaderClass {
     }
 
 }
-
-class Student{
-
-}
