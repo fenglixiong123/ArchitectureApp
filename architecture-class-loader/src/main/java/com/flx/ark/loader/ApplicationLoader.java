@@ -20,11 +20,11 @@ public class ApplicationLoader {
         ClassLoader appLoader = ApplicationLoader.class.getClassLoader();//获取ApplicationClassLoader
         System.out.println(appLoader);
         //使用ClassLoader.loadClass()来加载类，不会执行初始化块
-        appLoader.loadClass("com.flx.ark.loader.Student");
+        appLoader.loadClass("com.flx.ark.loader.entity.Student");
         //使用Class.forName()来加载类，指定ClassLoader，初始化时不执行静态块
-        Class<?> studentClass1 = Class.forName("com.flx.ark.loader.Student",false,appLoader);
+        Class<?> studentClass1 = Class.forName("com.flx.ark.loader.entity.Student",false,appLoader);
         //使用Class.forName()来加载类，默认会执行初始化块 Class.forName("Fdd")
-        Class<?> studentClass2 = Class.forName("com.flx.ark.loader.Student");
+        Class<?> studentClass2 = Class.forName("com.flx.ark.loader.entity.Student");
         System.out.println(studentClass1);
         System.out.println(studentClass2);
         System.out.println(studentClass1==studentClass2);

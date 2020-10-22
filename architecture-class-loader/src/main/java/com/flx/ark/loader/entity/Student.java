@@ -1,4 +1,4 @@
-package com.flx.ark.loader;
+package com.flx.ark.loader.entity;
 
 /**
  * @Author: Fenglixiong
