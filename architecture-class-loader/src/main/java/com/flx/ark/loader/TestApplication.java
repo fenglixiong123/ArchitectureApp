@@ -1,5 +1,6 @@
 package com.flx.ark.loader;
 
+import com.flx.ark.loader.custom.DecryptClassLoader;
 import com.flx.ark.loader.custom.MyClassLoader;
 
 import java.lang.reflect.InvocationTargetException;
@@ -14,7 +15,8 @@ public class TestApplication {
 
     public static void main(String[] args) throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
 
-        testParentLoaderCount();
+//        testClassLoader();
+        testDecryptClassLoader();
 
     }
 
@@ -61,6 +63,17 @@ public class TestApplication {
         Class<?> aClass2 = myClassLoader2.loadClass("com.flx.ark.loader.custom.MyObject");
         System.out.println(aClass1.hashCode());
         System.out.println(aClass2.hashCode());
+    }
+
+    /**
+     * 带加密解密的ClassLoader类加载器
+     * @throws ClassNotFoundException
+     */
+    public static void testDecryptClassLoader() throws ClassNotFoundException {
+        DecryptClassLoader decryptClassLoader = new DecryptClassLoader(Thread.currentThread().getContextClassLoader().getParent());
+        Class<?> aClass = decryptClassLoader.loadClass("com.flx.ark.loader.custom.CustomLoader");
+        System.out.println(aClass);
+        System.out.println(aClass.getClassLoader());
     }
 
 }
