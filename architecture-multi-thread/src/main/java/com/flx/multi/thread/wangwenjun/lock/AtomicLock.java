@@ -7,24 +7,22 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @Date: 2021/2/24 18:08
  * @Description:
  */
-public class CompareAndSetLock {
-
-    public static void main(String[] args) throws Exception{
-
-
-
-    }
+public class AtomicLock {
 
     private final AtomicInteger value = new AtomicInteger(0);
 
     public void tryLock() throws Exception{
-
         boolean success = value.compareAndSet(0,1);
-
         if(!success){
-
+            throw new Exception("GetLockFailed!");
         }
+    }
 
+    public void unlock(){
+        if(0==value.get()){
+            return;
+        }
+        boolean success = value.compareAndSet(1,0);
     }
 
 }
