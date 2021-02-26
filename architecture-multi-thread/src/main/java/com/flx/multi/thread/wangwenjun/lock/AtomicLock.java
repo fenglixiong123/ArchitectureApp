@@ -11,10 +11,14 @@ public class AtomicLock {
 
     private final AtomicInteger value = new AtomicInteger(0);
 
+    private Thread currentThread;
+
     public void tryLock() throws Exception{
         boolean success = value.compareAndSet(0,1);
         if(!success){
             throw new Exception("GetLockFailed!");
+        }else {
+            currentThread = Thread.currentThread();
         }
     }
 
@@ -22,7 +26,9 @@ public class AtomicLock {
         if(0==value.get()){
             return;
         }
-        boolean success = value.compareAndSet(1,0);
+        if(currentThread==Thread.currentThread()) {
+            value.compareAndSet(1,0);
+        }
     }
 
 }
