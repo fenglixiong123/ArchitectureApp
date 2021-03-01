@@ -190,6 +190,10 @@ ABA：
 T1: A---->C   
 T2: A----->B----->C
 
+解决ABA问题：  
+
+AtomicStampedReference,会给每个数据加一个邮戳，版本标记
+给数据加上版本号，类似乐观锁
 
 
 
