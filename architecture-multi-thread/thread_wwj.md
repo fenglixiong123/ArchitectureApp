@@ -196,7 +196,19 @@ AtomicStampedReference,会给每个数据加一个邮戳，版本标记
 给数据加上版本号，类似乐观锁
 
 
+### Atomic类
 
+AtomicInteger 整型原子操作类，主要用到Unsafe类的compareAndSwapInt()方法进行无锁操作
+
+AtomicReference 对自定义类型进行原子化操作
+
+AtomicReferenceArray 对数组进行原子化操作
+
+AtomicStampedReference 解决CAS操作所产生的ABA问题
+
+AtomicIntegerFieldUpdater 解决对象中字段原子化操作问题
+
+AtomicReferenceFieldUpdater 
 
 
 

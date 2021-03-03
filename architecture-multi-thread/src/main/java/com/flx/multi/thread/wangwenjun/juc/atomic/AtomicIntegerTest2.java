@@ -43,6 +43,7 @@ public class AtomicIntegerTest2 {
                 for (int c=0;c<1000;c++){
                     count ++;
                 }
+                System.out.print(count+" ");
             });
             ts[i].start();
         }
@@ -50,6 +51,7 @@ public class AtomicIntegerTest2 {
             ts[i].join();
         }
 
+        System.out.println();
         System.out.println("count = "+count);
 
     }

@@ -12,8 +12,9 @@ public class AtomicIntegerArrayTest {
     public static void main(String[] args) {
 
         AtomicIntegerArray integerArray = new AtomicIntegerArray(5);
-
-
+        integerArray.set(1,5);
+        System.out.println(integerArray.get(1));
+        integerArray.getAndSet(1,8);
     }
 
 }
