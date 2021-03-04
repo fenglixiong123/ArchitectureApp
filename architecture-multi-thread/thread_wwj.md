@@ -206,9 +206,14 @@ AtomicReferenceArray 对数组进行原子化操作
 
 AtomicStampedReference 解决CAS操作所产生的ABA问题
 
-AtomicIntegerFieldUpdater 解决对象中字段原子化操作问题
+AtomicIntegerFieldUpdater 解决对象中整型字段原子化操作问题
 
-AtomicReferenceFieldUpdater 
+AtomicReferenceFieldUpdater 解决对象中字段原子化操作问题
+
+使用场景：
+ * 1.想让类的属性操作具备原子性
+ * 2.不想使用锁（包含显示锁或者重量级锁synchronized）
+ * 3.大量需要原子类型修饰的对象，相比较耗费内存
 
 
 

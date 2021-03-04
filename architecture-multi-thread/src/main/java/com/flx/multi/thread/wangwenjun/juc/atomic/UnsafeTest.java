@@ -56,6 +56,21 @@ public class UnsafeTest {
     }
 
     /**
+     * 通过反射获取Unsafe实例
+     * @return
+     */
+    public static Unsafe getUnsafe(){
+        try {
+            Field f = Unsafe.class.getDeclaredField("theUnsafe");
+            f.setAccessible(true);
+            return  (Unsafe) f.get(null);
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            e.printStackTrace();
+            throw new RuntimeException("obtain Unsafe error!");
+        }
+    }
+
+    /**
      * 操作对象
      */
     private static void operateObject(Unsafe unsafe) throws InstantiationException, NoSuchFieldException {
@@ -111,21 +126,6 @@ public class UnsafeTest {
         unsafe.putInt(address + 4, 0x80000000);
         System.out.println("add byte to memory:" + unsafe.getInt(address));
         System.out.println("add byte to memory:" + unsafe.getInt(address + 4));
-    }
-
-    /**
-     * 通过反射获取Unsafe实例
-     * @return
-     */
-    private static Unsafe getUnsafe(){
-        try {
-            Field f = Unsafe.class.getDeclaredField("theUnsafe");
-            f.setAccessible(true);
-            return  (Unsafe) f.get(null);
-        } catch (NoSuchFieldException | IllegalAccessException e) {
-            e.printStackTrace();
-        }
-        return null;
     }
 
     @Data

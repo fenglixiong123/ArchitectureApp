@@ -5,7 +5,7 @@ import java.util.concurrent.atomic.AtomicIntegerArray;
 /**
  * @Author: Fenglixiong
  * @Date: 2021/3/2 10:42
- * @Description:
+ * @Description: 数组原子操作类
  */
 public class AtomicIntegerArrayTest {
 
