@@ -6,7 +6,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import sun.misc.Unsafe;
 
+import java.io.*;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 
 /**
  * @Author: Fenglixiong
@@ -29,7 +31,7 @@ public class UnsafeTest {
 
     private String name;
 
-    public static void main(String[] args) throws NoSuchFieldException, InstantiationException {
+    public static void main(String[] args) throws NoSuchFieldException, InstantiationException, IllegalAccessException, ClassNotFoundException {
 
         System.out.println(UnsafeTest.class);
         System.out.println(UnsafeTest.class.getName());
@@ -53,6 +55,8 @@ public class UnsafeTest {
         operateObject(unsafe);
         System.out.println("-----------------------");
         operateMemory(unsafe);
+        System.out.println("-----------------------");
+        operateTest(unsafe);
     }
 
     /**
@@ -128,12 +132,76 @@ public class UnsafeTest {
         System.out.println("add byte to memory:" + unsafe.getInt(address + 4));
     }
 
+    /**
+     * Unsafe加载class类
+     */
+    private static void operateClass(Unsafe unsafe) throws IOException, NoSuchMethodException, IllegalAccessException, InstantiationException, InvocationTargetException {
+        //加载并读取类
+        File file = new File("D:\\test\\A.class");
+        FileInputStream fis = new FileInputStream(file);
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        byte[] temp = new byte[1024];
+        int len;
+        while ((len = fis.read(temp))!=-1){
+            bos.write(temp,0,len);
+        }
+        bos.flush();
+        byte[] content = bos.toByteArray();
+        //构造类
+        Class<?> aClass = unsafe.defineClass(null, content, 0, content.length, null, null);
+        aClass.getMethod("get").invoke(aClass.newInstance(),null);
+
+    }
+
+    private static void operateTest(Unsafe unsafe) throws IllegalAccessException, InstantiationException, ClassNotFoundException, NoSuchFieldException {
+
+        //不会调用构造函数
+        //Class.forName("com.flx.multi.thread.wangwenjun.juc.atomic.UnsafeTest$Student");
+        //会调用构造函数
+        //Student student = Student.class.newInstance();
+        //直接在内存中开辟对象空间
+        Student instance = (Student) unsafe.allocateInstance(Student.class);
+        instance.setName("kkk");
+        instance.setAge(1);
+        System.out.println(instance);
+        System.out.println(instance.getClass());
+        System.out.println(instance.getClass().getClassLoader());
+
+        Guard guard = new Guard();
+        guard.work();
+        //使用unsafe直接修改私有成员属性的值
+        Field access_allowed = guard.getClass().getDeclaredField("ACCESS_ALLOWED");
+        long fieldOffset = unsafe.objectFieldOffset(access_allowed);
+        unsafe.putInt(guard,fieldOffset,42);
+        guard.work();
+
+    }
+
+    static class Guard{
+        private int ACCESS_ALLOWED = 1;
+        private boolean allow(){
+            return ACCESS_ALLOWED == 42;
+        }
+        public void work(){
+            if(allow()){
+                System.out.println("allowed,work start!");
+            }
+        }
+    }
+
     @Data
-    @NoArgsConstructor
-    @AllArgsConstructor
     private static class Student{
         private String name;
         private int age;
+
+        public Student() {
+            System.out.println("student construct...");
+        }
+
+        public Student(String name, int age) {
+            this.name = name;
+            this.age = age;
+        }
     }
 
 }
