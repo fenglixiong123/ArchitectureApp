@@ -11,7 +11,7 @@ import java.util.concurrent.Executors;
  * @Date: 2021/3/8 16:34
  * @Description: 门栓，插销
  */
-public class CountDownLatchTest {
+public class CountDownLatchBase {
 
     private static Random random = new Random(System.currentTimeMillis());
 
