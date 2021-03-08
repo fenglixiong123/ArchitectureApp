@@ -1,14 +1,18 @@
 package com.flx.multi.thread.wangwenjun.juc.atomic;
 
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import sun.misc.Unsafe;
 
-import java.io.*;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Modifier;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * @Author: Fenglixiong
@@ -57,6 +61,9 @@ public class UnsafeTest {
         operateMemory(unsafe);
         System.out.println("-----------------------");
         operateTest(unsafe);
+
+        System.out.println("对象大小："+sizeOf(unsafe,new Student()));
+
     }
 
     /**
@@ -148,9 +155,9 @@ public class UnsafeTest {
         bos.flush();
         byte[] content = bos.toByteArray();
         //构造类
-        Class<?> aClass = unsafe.defineClass(null, content, 0, content.length, null, null);
-        aClass.getMethod("get").invoke(aClass.newInstance(),null);
-
+        Class<?> aClass = unsafe.defineClass(null, content, 0, content.length,null,null);
+        Object object = aClass.getMethod("get").invoke(aClass.newInstance(), null);
+        System.out.println(object);
     }
 
     private static void operateTest(Unsafe unsafe) throws IllegalAccessException, InstantiationException, ClassNotFoundException, NoSuchFieldException {
@@ -177,6 +184,35 @@ public class UnsafeTest {
 
     }
 
+
+    /**
+     * 获取对象长度
+     * @return
+     */
+    public static long sizeOf(Unsafe unsafe,Object obj){
+        Set<Field> fields = new HashSet<>();
+        Class c = obj.getClass();
+        //循环拿出所有的父类
+        while (c!=Object.class){
+            Field[] declaredFields = c.getDeclaredFields();
+            for (Field f:declaredFields){
+                if((f.getModifiers() & Modifier.STATIC)==0){//排除静态变量
+                    fields.add(f);
+                }
+            }
+            c = c.getSuperclass();
+        }
+        long maxOffSize = 0;
+        for(Field f:fields){
+            long offset = unsafe.objectFieldOffset(f);
+            if(offset>maxOffSize){
+                maxOffSize = offset;
+            }
+        }
+        return ((maxOffSize/8)+1)*8;
+    }
+
+    //使用unsafe可以直接给私有属性赋值
     static class Guard{
         private int ACCESS_ALLOWED = 1;
         private boolean allow(){
