@@ -16,6 +16,11 @@ import java.util.stream.IntStream;
  * getNumberWaiting 获得等待线程数量
  * isBroken 判断是否打断
  * reset 重置
+ *
+ * CountDownLatch VS CyclicBarrier
+ *
+ * 1.countDownLatch不能reset，而cyclicBarrier是可以循环使用的
+ * 2.工作线程之间互不关心，工作线程必须等到同一个共同点才去执行某个动作
  **/
 public class CyclicBarrierApi {
 
