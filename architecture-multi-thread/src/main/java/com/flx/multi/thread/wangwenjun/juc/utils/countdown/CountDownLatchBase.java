@@ -1,4 +1,4 @@
-package com.flx.multi.thread.wangwenjun.juc.utils;
+package com.flx.multi.thread.wangwenjun.juc.utils.countdown;
 
 import java.util.Arrays;
 import java.util.Random;

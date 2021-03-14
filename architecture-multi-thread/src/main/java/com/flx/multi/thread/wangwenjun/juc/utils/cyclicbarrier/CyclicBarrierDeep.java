@@ -1,4 +1,4 @@
-package com.flx.multi.thread.wangwenjun.juc.utils;
+package com.flx.multi.thread.wangwenjun.juc.utils.cyclicbarrier;
 
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
