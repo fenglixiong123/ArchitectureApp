@@ -217,14 +217,34 @@ AtomicReferenceFieldUpdater 解决对象中字段原子化操作问题
  
 ### CountDownLatch 
 
+门栓，插销  
+
+相当于一个计数器，倒计时线程个数，每执行完一个线程计数器-1，等到计数器为0，执行完毕，唤醒等待的线程
+
+1.CountDownLatch退出的两种情况：
+ *    (1)计数器为0 new CountDownLatch(0)
+ *    (2)await线程受到countDown线程中断   
+ 
+2.等待一定时间自我唤醒
+ *    latch.await(2000, TimeUnit.MILLISECONDS);
 
 
+### CyclicBarrier
 
+线程之间互相等待,全部执行完毕一起退出，可以重复使用
 
+CountDownLatch VS CyclicBarrier
+ 
+ * 1.countDownLatch不能reset，而cyclicBarrier是可以循环使用的
+ * 2.工作线程之间互不关心，工作线程必须等到同一个共同点才去执行某个动作
 
+### Exchanger
 
+线程交换器，两个伙伴线程可以在同一时间进行数据交换，交换的是数据本身，而不是副本
 
+### Semaphore
 
+信号量
 
 
 
