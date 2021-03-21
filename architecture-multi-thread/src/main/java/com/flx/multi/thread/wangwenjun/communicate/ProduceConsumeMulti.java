@@ -43,40 +43,37 @@ public class ProduceConsumeMulti {
 
     private void produce(){
         synchronized (lock){
-            if(isProduced){
+            while (isProduced){
                 try {
                     lock.wait();
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-            }else {
-                count++;
-                System.out.println(Thread.currentThread().getName()+"-->" + count);
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                isProduced = true;
-                lock.notifyAll();
             }
-
+            count++;
+            System.out.println(Thread.currentThread().getName()+"-->" + count);
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            isProduced = true;
+            lock.notifyAll();
         }
     }
 
     private void consume(){
         synchronized (lock){
-            if(isProduced){
-                System.out.println(Thread.currentThread().getName()+"-->" + count);
-                isProduced = false;
-                lock.notifyAll();
-            }else {
+            while (!isProduced){
                 try {
                     lock.wait();
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
             }
+            System.out.println(Thread.currentThread().getName()+"-->" + count);
+            isProduced = false;
+            lock.notifyAll();
         }
     }
 

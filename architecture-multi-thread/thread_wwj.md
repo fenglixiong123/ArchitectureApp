@@ -69,6 +69,8 @@ class锁:<br/>
 
 **sleep和wait的区别？**
 
+两者都会释放cpu执行权
+
 1. sleep是Thread的方法，wait是Object的方法
 2. sleep不会释放锁，wait会释放锁并加入对象等待队列
 3. sleep不依赖锁，但是wait必须在synchronized里面
@@ -244,9 +246,11 @@ CountDownLatch VS CyclicBarrier
 
 ### Semaphore
 
-信号量
+信号量 许可证，令牌桶
 
+可以用作控制线程并发数量，当许可证个数为1时候可以用作lock锁
 
+### locks
 
 
 

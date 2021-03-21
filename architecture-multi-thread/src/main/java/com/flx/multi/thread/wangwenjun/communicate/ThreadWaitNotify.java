@@ -17,31 +17,18 @@ public class ThreadWaitNotify {
 
         ThreadWaitNotify waitNotify = new ThreadWaitNotify();
 
-        new Thread(){
-            @Override
-            public void run() {
-                waitNotify.waitLock();
-            }
-        }.start();
+        new Thread(waitNotify::waitLock).start();
 
-        new Thread(){
-            @Override
-            public void run() {
-                waitNotify.waitLock();
-            }
-        }.start();
+        new Thread(waitNotify::waitLock).start();
 
-        new Thread(){
-            @Override
-            public void run() {
-                try {
-                    Thread.sleep(5_000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                waitNotify.notifyLock();
+        new Thread(() -> {
+            try {
+                Thread.sleep(5_000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
-        }.start();
+            waitNotify.notifyLock();
+        }).start();
 
     }
 

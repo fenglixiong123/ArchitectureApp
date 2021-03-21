@@ -36,40 +36,39 @@ public class ProduceConsumeSingle {
 
     private void produce(){
         synchronized (lock){
-            if(isProduced){
+            //wait会释放锁（也会释放cup执行权）
+            //此处不能换成if,因为被唤醒后需要再次检查isProduced变量是否已经生产
+            while (isProduced){
                 try {
                     lock.wait();
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-            }else {
-                count++;
-                System.out.println("Produce->" + count);
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                isProduced = true;
-                lock.notify();
             }
-
+            count++;
+            System.out.println("Produce->" + count);
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            isProduced = true;
+            lock.notify();
         }
     }
 
     private void consume(){
         synchronized (lock){
-            if(isProduced){
-                System.out.println("Consumer->" + count);
-                isProduced = false;
-                lock.notify();
-            }else {
+            while (!isProduced){
                 try {
                     lock.wait();
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
             }
+            System.out.println("Consumer->" + count);
+            isProduced = false;
+            lock.notify();
         }
     }
 
