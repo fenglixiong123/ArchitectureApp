@@ -15,6 +15,7 @@
         <module>architecture-jvm</module>
         <module>architecture-multi-thread</module>
         <module>architecture-java8</module>
+        <module>architecture-nio-netty</module>
     </modules>
 
     <properties>
