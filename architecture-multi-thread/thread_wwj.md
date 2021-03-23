@@ -252,6 +252,24 @@ CountDownLatch VS CyclicBarrier
 
 ### locks
 
+ReentrantLock 显式锁，悲观锁
+
+Condition 条件
+
+ReentrantReadWriteLock 读写锁，除了读读可以同时进行，其他情况都要加锁，对多读的效率比较低
+
+StampedLock 解决读写锁，多读的效率低下问题
+
+### ForkJoin
+
+分而治之的思想，任务拆解，大任务--->多个小任务进行多线程进行，最后把结果进行汇总
+ * ForkJoinPool
+ * ForkJoinTask
+ * RecursiveAction --->继承 ForkJoinTask
+ * RecursiveTask --->继承 ForkJoinTask
+
+### Phrase 
+
 
 
 
