@@ -66,7 +66,7 @@ public class ThreadInterruptStop {
                 break;
             }
             try {
-                executeThread.sleep(1);
+                Thread.sleep(1);
             } catch (InterruptedException e) {
                 System.out.println("executeThread 被打断！");
                 break;

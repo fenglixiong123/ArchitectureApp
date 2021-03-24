@@ -11,7 +11,8 @@ import java.util.stream.IntStream;
  * @Description: 相当于动态版本的CyclicBarrier
  *
  * 运动员案例>>>>>多项赛事的运动员案例
- *
+ * register() 注册，等同于parties+1
+ * arriveAndAwaitAdvance() 到达并且等待其他线程结束
  */
 public class PhaserCase {
 

@@ -5,6 +5,10 @@ package com.flx.multi.thread.wangwenjun.base;
  * @Create 2020/8/25 2:29
  * @Description
  * 如何优雅的停止线程
+ *
+ * 设置线程中断标识
+ * 循环判断是否中断标志
+ * 结束程序执行break,return
  **/
 public class ThreadInterruptDeep {
 

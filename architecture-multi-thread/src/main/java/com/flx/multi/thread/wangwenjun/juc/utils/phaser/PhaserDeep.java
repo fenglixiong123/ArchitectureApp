@@ -10,6 +10,7 @@ import java.util.stream.IntStream;
  * @Date: 2021/3/23 16:53
  * @Description: 如果有线程中途退出
  * 案例：多人运动，其中一个运动员受伤，提前宣布退出
+ * arriveAndDeregister() 等同于parties-1
  */
 public class PhaserDeep {
 
