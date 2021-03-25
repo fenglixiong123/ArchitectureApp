@@ -13,38 +13,19 @@ public class ThreadDaemonDeep {
 
     public static void main(String[] args) {
         System.out.println(Thread.currentThread().getName()+" thread start ..");
-        Thread t = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                System.out.println(Thread.currentThread().getName()+" thread start ..");
-                Thread innerThread = new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        try {
-                            Thread.currentThread().setName("daemonThread");
-                            System.out.println(Thread.currentThread().getName()+" thread start ..");
-                            for (int i = 0; i < 100; i++) {
-                                Thread.sleep(1000);
-                                System.out.println(Thread.currentThread().getName()+" health check ...");
-                            }
-                            System.out.println(Thread.currentThread().getName()+" thread end ..");
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                });
-                innerThread.setDaemon(true);
-                innerThread.start();
-                try {
-                    Thread.sleep(5_000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                System.out.println(Thread.currentThread().getName()+" thread end ..");
+        Thread t = new Thread(() -> {
+            System.out.println(Thread.currentThread().getName()+" thread start ..");
+            Thread innerThread = getInnerThread();
+            innerThread.setDaemon(true);
+            innerThread.start();
+            try {
+                Thread.sleep(5_000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
-        });
+            System.out.println(Thread.currentThread().getName()+" thread end ..");
+        },"[masterThread]");
 
-//        t.setDaemon(true);
         t.start();
         try {
             Thread.sleep(2_000);
@@ -52,6 +33,28 @@ public class ThreadDaemonDeep {
             e.printStackTrace();
         }
         System.out.println(Thread.currentThread().getName()+" thread end ..");
+    }
+
+    /**
+     * 获取守护线程，心跳线程--->主人结束，自己跟着结束
+     * @return
+     */
+    private static Thread getInnerThread(){
+
+        return new Thread(() -> {
+            try {
+                Thread.currentThread().setName("daemonThread");
+                System.out.println(Thread.currentThread().getName()+" thread start ..");
+                for (int i = 0; i < 100; i++) {
+                    Thread.sleep(1000);
+                    System.out.println(Thread.currentThread().getName()+" health check ...");
+                }
+                System.out.println(Thread.currentThread().getName()+" thread end ..");
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        });
+
     }
 
 }

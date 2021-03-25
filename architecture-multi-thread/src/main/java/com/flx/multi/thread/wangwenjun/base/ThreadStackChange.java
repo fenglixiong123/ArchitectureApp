@@ -13,14 +13,11 @@ public class ThreadStackChange {
 
     public static void main(String[] args) {
 
-        Runnable runnable = new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    add(0);
-                }catch (Error e){
-                    System.out.println("When StackOverflowError count = "+count);
-                }
+        Runnable runnable = () -> {
+            try {
+                add(0);
+            }catch (Error e){
+                System.out.println("When StackOverflowError count = "+count);
             }
         };
         Thread t = new Thread(null,runnable,"StackThread",1<<24);

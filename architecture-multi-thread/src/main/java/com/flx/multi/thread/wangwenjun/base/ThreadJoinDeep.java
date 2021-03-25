@@ -32,35 +32,37 @@ public class ThreadJoinDeep {
         System.out.println("Capture data use time "+(endTime-startTime)/1000+" s");
     }
 
-}
+    static class CaptureTask implements Runnable{
 
-class CaptureTask implements Runnable{
+        private String machineName;
 
-    private String machineName;
+        private long spendTime;
 
-    private long spendTime;
+        private long startTime;
 
-    private long startTime;
-
-    public CaptureTask(String machineName,long spendTime,long startTime) {
-        this.machineName = machineName;
-        this.spendTime = spendTime;
-        this.startTime = startTime;
-    }
-
-    @Override
-    public void run() {
-        //采集服务器信息
-        try {
-            Thread.sleep(spendTime);
-            System.out.println(machineName+" completed data capture and successful , useTime = "+(System.currentTimeMillis()-startTime)/1000+" s");
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+        public CaptureTask(String machineName,long spendTime,long startTime) {
+            this.machineName = machineName;
+            this.spendTime = spendTime;
+            this.startTime = startTime;
         }
-    }
 
-    public String getResult(){
-        return machineName+" finished !";
+        @Override
+        public void run() {
+            //采集服务器信息
+            try {
+                Thread.sleep(spendTime);
+                System.out.println(machineName+" completed data capture and successful , useTime = "+(System.currentTimeMillis()-startTime)/1000+" s");
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+
+        public String getResult(){
+            return machineName+" finished !";
+        }
+
     }
 
 }
+
+

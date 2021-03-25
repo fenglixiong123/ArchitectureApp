@@ -20,16 +20,13 @@ public class ThreadStackMax {
         try {
             for (int i = 0; i < size; i++) {
                 counter ++;
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        //栈帧的宽度
+                new Thread(() -> {
+                    //栈帧的宽度
 //                        byte[] data = new byte[1024*1024*2];
-                        try {
-                            Thread.sleep(3600*1000);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
+                    try {
+                        Thread.sleep(3600*1000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
                     }
                 }).start();
                 System.out.println("Thread : "+counter);
