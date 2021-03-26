@@ -13,19 +13,16 @@ public class ThreadYield {
 
     public static void main(String[] args) throws InterruptedException {
 
-        Thread t1 = new Thread(){
-            @Override
-            public void run() {
-                System.out.println("t1 work ");
-                Arrays.asList(1,2,3,4,5,6,7,8,9).forEach(e->{
-                    System.out.println("t1----->"+e);
-                    if(e.equals(3)){
-                        System.out.println("t1 yield");
-                        Thread.yield();
-                    }
-                });
-            }
-        };
+        Thread t1 = new Thread(() -> {
+            System.out.println("t1 work ");
+            Arrays.asList(1,2,3,4,5,6,7,8,9).forEach(e->{
+                System.out.println("t1----->"+e);
+                if(e.equals(3)){
+                    System.out.println("t1 yield");
+                    Thread.yield();
+                }
+            });
+        });
 
         Thread t2 = new Thread(()->{
             System.out.println("t2 work ");
