@@ -23,29 +23,31 @@ public class ChinaBank {
 
     }
 
-}
+    static class TicketTask implements Runnable{
 
-class TicketTask implements Runnable{
+        private final int max = 50;
 
-    private final int max = 50;
+        private int index = 1;
 
-    private int index = 1;
+        private final Object MONITOR = new Object();
 
-    private final Object MONITOR = new Object();
-
-    public void run() {
-        while (true){
-            synchronized (MONITOR){
-                if(index > max){
-                    break;
-                }
-                System.out.println(Thread.currentThread().getName()+"-当前号码是："+(index++));
-                try {
-                    Thread.sleep(100);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
+        public void run() {
+            while (true){
+                synchronized (MONITOR){
+                    if(index > max){
+                        break;
+                    }
+                    System.out.println(Thread.currentThread().getName()+"-当前号码是："+(index++));
+                    try {
+                        Thread.sleep(100);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         }
     }
+
+
 }
+

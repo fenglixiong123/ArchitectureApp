@@ -66,7 +66,7 @@ public class UserSendMessageCase {
     @Data
     @NoArgsConstructor
     @AllArgsConstructor
-    static class User{
+    private static class User{
         private String userId;
         private String userName;
     }
