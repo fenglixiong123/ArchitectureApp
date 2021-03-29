@@ -39,21 +39,18 @@ public class ThreadInterruptStop {
     private Thread executeThread;
 
     public void execute(Runnable task){
-        executeThread = new Thread(){
-            @Override
-            public void run() {
-                //守护线程
-                Thread runner = new Thread(task);
-                runner.setDaemon(true);
-                runner.start();
-                try {
-                    runner.join();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                finished = true;
+        executeThread = new Thread(() -> {
+            //守护线程
+            Thread runner = new Thread(task);
+            runner.setDaemon(true);
+            runner.start();
+            try {
+                runner.join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
-        };
+            finished = true;
+        });
         executeThread.start();
     }
 

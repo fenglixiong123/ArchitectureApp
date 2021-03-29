@@ -1,4 +1,4 @@
-package com.flx.multi.thread.wangwenjun.base;
+package com.flx.multi.thread.wangwenjun.apple;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

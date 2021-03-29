@@ -1,6 +1,6 @@
 package com.flx.multi.thread.wangwenjun.juc.atomic;
 
-import com.flx.multi.thread.wangwenjun.base.Student;
+import com.flx.multi.thread.wangwenjun.apple.Student;
 
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicStampedReference;

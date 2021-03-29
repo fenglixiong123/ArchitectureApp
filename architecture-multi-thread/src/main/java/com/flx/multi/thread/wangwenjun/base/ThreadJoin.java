@@ -8,6 +8,7 @@ import java.util.stream.IntStream;
  * @Create 2020/8/24 2:09
  * @Description
  * 等待其join自己的线程先执行完毕再执行
+ * 目前可以用更加高级的contDown代替
  **/
 public class ThreadJoin {
 
