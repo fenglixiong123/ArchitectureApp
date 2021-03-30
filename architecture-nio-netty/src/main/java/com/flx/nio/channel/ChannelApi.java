@@ -28,6 +28,14 @@ package com.flx.nio.channel;
  * 四、通道之间的数据传输
  * transferFrom()
  * transferTo()
+ *
+ * 五、分散(Scatter)与聚集(Gather)
+ * 分散读取：(Scatter reads)将通道中的数据分散到多个缓冲区
+ * 聚集写入：(Gather writes)将多个缓冲区中的数据聚集到通道中
+ *
+ * 六、字符集
+ * 编码：字符串--->字节数组
+ * 解码：字节数组--->字符串
  */
 public class ChannelApi {
 
