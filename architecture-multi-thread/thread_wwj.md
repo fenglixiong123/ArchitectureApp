@@ -138,7 +138,6 @@ cpu2-> main memory->i(1)->cache i+1->cache(2)->main memory(2)
 * 当cpu写入数据的时候，如果发现该变量被共享（也就是在其他cpu中也存在该变量副本），会发出一个信号通知其他cpu该变量无效
 * 当其他cpu访问该变量时候，重新去主内存读取
 
-
 ### 并发编程三原则
 
 1.原子性
@@ -197,8 +196,9 @@ T2: A----->B----->C
 AtomicStampedReference,会给每个数据加一个邮戳，版本标记
 给数据加上版本号，类似乐观锁
 
+### JUC工具类
 
-### Atomic类
+#### Atomic类
 
 AtomicInteger 整型原子操作类，主要用到Unsafe类的compareAndSwapInt()方法进行无锁操作
 
@@ -217,7 +217,7 @@ AtomicReferenceFieldUpdater 解决对象中字段原子化操作问题
  * 2.不想使用锁（包含显示锁或者重量级锁synchronized）
  * 3.大量需要原子类型修饰的对象，相比较耗费内存
  
-### CountDownLatch 
+#### CountDownLatch 
 
 门栓，插销  
 
@@ -231,7 +231,7 @@ AtomicReferenceFieldUpdater 解决对象中字段原子化操作问题
  *    latch.await(2000, TimeUnit.MILLISECONDS);
 
 
-### CyclicBarrier
+#### CyclicBarrier
 
 线程之间互相等待,全部执行完毕一起退出，可以重复使用
 
@@ -240,17 +240,17 @@ CountDownLatch VS CyclicBarrier
  * 1.countDownLatch不能reset，而cyclicBarrier是可以循环使用的
  * 2.工作线程之间互不关心，工作线程必须等到同一个共同点才去执行某个动作
 
-### Exchanger
+#### Exchanger
 
 线程交换器，两个伙伴线程可以在同一时间进行数据交换，交换的是数据本身，而不是副本
 
-### Semaphore
+#### Semaphore
 
 信号量 许可证，令牌桶
 
 可以用作控制线程并发数量，当许可证个数为1时候可以用作lock锁
 
-### locks
+#### locks
 
 ReentrantLock 显式锁，悲观锁
 
@@ -260,7 +260,7 @@ ReentrantReadWriteLock 读写锁，除了读读可以同时进行，其他情况
 
 StampedLock 解决读写锁，多读的效率低下问题
 
-### ForkJoin
+#### ForkJoin
 
 分而治之的思想，任务拆解，大任务--->多个小任务进行多线程进行，最后把结果进行汇总
  * ForkJoinPool
@@ -268,12 +268,34 @@ StampedLock 解决读写锁，多读的效率低下问题
  * RecursiveAction --->继承 ForkJoinTask
  * RecursiveTask --->继承 ForkJoinTask
 
-### Phrase 
+#### Phrase 
 
+多阶段执行任务，类似可以复用的contDownLatch
 
+### 线程池
 
+#### 线程池好处
 
+ * 降低资源消耗。通过重复利用已创建的线程降低线程创建和销毁造成的消耗。
+ * 提高响应速度。当任务到达时，任务可以不需要的等到线程创建就能立即执行。
+ * 易于控制线程的并发，提高系统负载能力，不会无休止的创建线程
+ * 提高线程的可管理性。线程是稀缺资源，如果无限制的创建，不仅会消耗系统资源，还会降低系统的稳定性，使用线程池可以进行统一的分配，调优和监控。
 
+#### 线程池状态变化
+
+![线程池状态变化](./src/main/resources/pic/thread_pool_state.png "ThreadPoolState") 
+
+1. RUNNING ：能接受新提交的任务，并且也能处理阻塞队列中的任务；
+2. SHUTDOWN：关闭状态，不再接受新提交的任务，但却可以继续处理阻塞队列中已保存的任务。在线程池处于 RUNNING 状态时，调用 shutdown()方法会使线程池进入到该状态。（finalize() 方法在执行过程中也会调用shutdown()方法进入该状态）；
+3. STOP：不能接受新任务，也不处理队列中的任务，会中断正在处理任务的线程。在线程池处于 RUNNING 或 SHUTDOWN 状态时，调用 shutdownNow() 方法会使线程池进入到该状态；
+4. TIDYING：如果所有的任务都已终止了，workerCount (有效线程数) 为0，线程池进入该状态后会调用 terminated() 方法进入TERMINATED 状态。
+5. TERMINATED：在terminated() 方法执行完后进入该状态，默认terminated()方法中什么也没有做。进入TERMINATED的条件如下：
+
+    * 线程池不是RUNNING状态；
+    * 线程池状态不是TIDYING状态或TERMINATED状态；
+    * 如果线程池状态是SHUTDOWN并且workerQueue为空；
+    * workerCount为0；
+    * 设置TIDYING状态成功。
 
 
 
