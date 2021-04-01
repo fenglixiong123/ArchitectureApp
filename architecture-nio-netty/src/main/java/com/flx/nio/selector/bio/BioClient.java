@@ -14,7 +14,7 @@ import static com.flx.utils.FileUtils.close;
  * @Date: 2021/4/1 13:24
  * @Description: 模拟客户端发送图片数据，并接受服务端反馈信息
  */
-public class Client {
+public class BioClient {
 
     public static void main(String[] args) {
 

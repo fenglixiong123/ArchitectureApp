@@ -37,6 +37,12 @@ package com.flx.nio.selector;
  *
  * 3.选择器(Selector)：用于监控通道的IO状况
  *
+ * SelectorKey选择器监听得到事件
+ *      |--->SelectionKey.OP_READ(1)//读
+ *      |--->SelectionKey.OP_WRITE(4)//写
+ *      |--->SelectionKey.OP_CONNECT(8)//连接
+ *      |--->SelectionKey.OP_ACCEPT(16)//接收
+ * 若注册时候监听不止一个事件，则可以使用位或操作符连接
  */
 public class SelectorApi {
 

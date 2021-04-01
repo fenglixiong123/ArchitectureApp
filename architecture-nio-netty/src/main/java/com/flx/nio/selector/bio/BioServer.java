@@ -16,7 +16,7 @@ import static com.flx.utils.FileUtils.close;
  * @Date: 2021/4/1 13:24
  * @Description: 一个阻塞通信的案例
  */
-public class Server {
+public class BioServer {
 
     public static void main(String[] args) {
 

@@ -5,6 +5,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.nio.channels.FileChannel;
+import java.nio.channels.Pipe;
 import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;
 
@@ -34,6 +35,16 @@ public class FileUtils {
         try {
             if(socketChannel!=null) {
                 socketChannel.close();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void close(ServerSocketChannel serverChannel){
+        try {
+            if(serverChannel!=null) {
+                serverChannel.close();
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -80,10 +91,20 @@ public class FileUtils {
         }
     }
 
-    public static void close(ServerSocketChannel serverSocketChannel){
+    public static void close(Pipe.SinkChannel sinkChannel){
         try {
-            if(serverSocketChannel!=null) {
-                serverSocketChannel.close();
+            if(sinkChannel!=null) {
+                sinkChannel.close();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void close(Pipe.SourceChannel sourceChannel){
+        try {
+            if(sourceChannel!=null) {
+                sourceChannel.close();
             }
         } catch (IOException e) {
             e.printStackTrace();
