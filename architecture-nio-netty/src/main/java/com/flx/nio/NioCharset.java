@@ -1,4 +1,4 @@
-package com.flx.nio.base;
+package com.flx.nio;
 
 import java.nio.ByteBuffer;
 import java.nio.CharBuffer;

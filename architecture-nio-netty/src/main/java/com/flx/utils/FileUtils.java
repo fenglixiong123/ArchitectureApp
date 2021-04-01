@@ -5,6 +5,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.nio.channels.FileChannel;
+import java.nio.channels.ServerSocketChannel;
+import java.nio.channels.SocketChannel;
 
 /**
  * @Author Fenglixiong
@@ -13,48 +15,75 @@ import java.nio.channels.FileChannel;
  **/
 public class FileUtils {
 
+
+
+
     public static void close(FileInputStream fis, FileOutputStream fos, FileChannel fisChannel, FileChannel fosChannel){
+        close(fis);
+        close(fos);
+        close(fisChannel);
+        close(fosChannel);
+    }
+
+    public static void close(RandomAccessFile randomAccessFile, FileChannel fileChannel){
+        close(randomAccessFile);
+        close(fileChannel);
+    }
+
+    public static void close(SocketChannel socketChannel){
         try {
-            if(fis!=null) {
-                fis.close();
+            if(socketChannel!=null) {
+                socketChannel.close();
             }
         } catch (IOException e) {
-            e.printStackTrace();
-        }
-        try {
-            if(fos!=null) {
-                fos.close();
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        try {
-            if(fisChannel!=null) {
-                fisChannel.close();
-            }
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-        try {
-            if(fosChannel!=null) {
-                fosChannel.close();
-            }
-        }catch (Exception e){
             e.printStackTrace();
         }
     }
 
-    public static void close(RandomAccessFile file, FileChannel fileChannel){
+    public static void close(FileChannel fileChannel){
         try {
-            if(file!=null) {
-                file.close();
+            if(fileChannel!=null) {
+                fileChannel.close();
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public static void close(RandomAccessFile randomAccessFile){
         try {
-            if(fileChannel!=null){
-                fileChannel.close();
+            if(randomAccessFile!=null) {
+                randomAccessFile.close();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void close(FileInputStream fileInputStream){
+        try {
+            if(fileInputStream!=null) {
+                fileInputStream.close();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void close(FileOutputStream fileOutputStream){
+        try {
+            if(fileOutputStream!=null) {
+                fileOutputStream.close();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void close(ServerSocketChannel serverSocketChannel){
+        try {
+            if(serverSocketChannel!=null) {
+                serverSocketChannel.close();
             }
         } catch (IOException e) {
             e.printStackTrace();
