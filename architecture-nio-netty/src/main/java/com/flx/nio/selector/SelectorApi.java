@@ -19,6 +19,9 @@ package com.flx.nio.selector;
  * 选择器Selector是SelectableChannel对象的多路复用器。
  * Selector可以同时监控多个SelectableChannel的IO状况，也就是说利用Selector可以使用一个单独的线程管理多个Channel
  *
+ * 与Selector一起使用时，Channel必须处于非阻塞模式下。
+ * 这意味着不能将FileChannel与Selector一起使用，因为FileChannel不能切换到非阻塞模式。而套接字通道都可以。
+ *
  * 结构图
  * Selectable
  *      |--->AbstractSelectableChannel

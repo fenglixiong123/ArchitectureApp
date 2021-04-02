@@ -8,7 +8,7 @@ import java.nio.file.StandardOpenOption;
 /**
  * @Author Fenglixiong
  * @Create 2021/3/31 2:14
- * @Description
+ * @Description 实现了零拷贝功能，直接调用的是操作系统的零拷贝方法
  **/
 public class FileChannelTransfer {
 

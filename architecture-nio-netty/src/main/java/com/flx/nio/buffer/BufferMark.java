@@ -7,7 +7,8 @@ import java.util.Arrays;
 /**
  * @Author Fenglixiong
  * @Create 2021/3/24 23:18
- * @Description
+ * @Description 标记之前读过的位置
+ * 可以通过reset恢复到之前读过的位置
  **/
 public class BufferMark {
 

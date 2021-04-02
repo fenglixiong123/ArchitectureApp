@@ -32,6 +32,12 @@ import java.nio.ByteBuffer;
  * 四、直接缓冲区与非直接缓冲区
  * 非直接缓冲区：通过allocate()方法分配的缓冲区，将缓冲区建立在jvm内存中
  * 直接缓冲区：通过allocateDirect()方法分配的缓冲区，将缓冲区建立在物理内容中，可以提高效率
+ *
+ * clear()与compact()
+ *
+ * clear() 会清理整个缓冲区（其实只是把position=0，limit=capacity）
+ * compact() 会将未读数据copy到buffer的起始位置，然后将position设置到最后一个未读元素的后面
+ *
  **/
 public class BufferApi {
 
