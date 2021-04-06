@@ -12,18 +12,19 @@ import io.netty.channel.socket.nio.NioServerSocketChannel;
 /**
  * @Author: Fenglixiong
  * @Date: 2021/4/6 18:35
- * @Description:
+ * @Description: Netty服务网器端
+ * bossGroup和WorkGroup含有子线程数量，默认cpu核数*2
  */
 public class NettyServer {
 
     public static void main(String[] args) throws InterruptedException {
-        //创建BossGroup
+        //创建BossGroup,默认创建了2*cpu个子线程
         //只处理连接请求，真正和客户端的业务处理会交给workGroup
         //无线循环
-        EventLoopGroup bossGroup = new NioEventLoopGroup();
+        EventLoopGroup bossGroup = new NioEventLoopGroup(1);
         //创建workGroup
         //处理客户端的业务请求
-        EventLoopGroup workGroup = new NioEventLoopGroup();
+        EventLoopGroup workGroup = new NioEventLoopGroup(8);
         try {
             //创建服务器端的启动对象，配置参数
             ServerBootstrap serverBootstrap = new ServerBootstrap();
