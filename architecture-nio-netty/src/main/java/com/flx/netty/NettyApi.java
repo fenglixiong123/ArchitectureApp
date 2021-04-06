@@ -11,7 +11,7 @@ package com.flx.netty;
  * Netty主要针对TCP协议下，面向Clients段的高并发应用，或者Peer-to-Peer场景下的大量数据持续传输的应用
  * Netty本质是一个NIO框架，适用于服务器通讯相关的多重应用场景
  *
- * why use nio?
+ * why use netty?
  *
  * 原生NIO繁杂，需要具备多重技能，开发工作量大，处理异常，网络拥堵，重连等麻烦，Bug难以解决等
  *
@@ -86,7 +86,7 @@ public class NettyApi {
      * 5）NioEventLoopGroup可以有多个线程，即可以含有多个NioEventLoop
      * 6）每个Boss NioEventLoop循环执行的步骤：
      *      1.轮询accept事件
-     *      2.处理accept事件，与client简历连接，生成NioSocketChannel，并将其注册到worker NIOEventLoop上的selector
+     *      2.处理accept事件，与client建立连接，生成NioSocketChannel，并将其注册到worker NIOEventLoop上的selector
      *      3.处理任务队列的任务，即runAllTasks
      * 7）每个Worker NioEventLoop循环执行的步骤
      *      1.轮询read，write事件
