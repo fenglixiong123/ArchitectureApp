@@ -34,7 +34,9 @@
  *      3.处理任务队列的任务，即runAllTasks
  * 8)每个Worker NIOEventLoop处理业务时候会使用Pipeline管道，pipeline中包含了channel，即通过pipeline可以获取到对应通道，pipeline中维护了很多处理器
 
+### Pipeline
 
+![Netty入站出站模式](./src/main/resources/pic/pipline.png "Netty入站出站模式") 
 
 
 

@@ -1,13 +1,14 @@
 package com.flx.netty.base;
 
+import com.flx.netty.base.handler.NettyServerHandler;
 import io.netty.bootstrap.ServerBootstrap;
-import io.netty.channel.ChannelFuture;
-import io.netty.channel.ChannelInitializer;
-import io.netty.channel.ChannelOption;
-import io.netty.channel.EventLoopGroup;
+import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
+
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @Author: Fenglixiong
@@ -16,6 +17,9 @@ import io.netty.channel.socket.nio.NioServerSocketChannel;
  * bossGroup和WorkGroup含有子线程数量，默认cpu核数*2
  */
 public class NettyServer {
+
+    //后序推送任务可以拿到SocketChannel来进行对应的推送任务
+    private static Map<String,SocketChannel> userMap = new ConcurrentHashMap<>();
 
     public static void main(String[] args) throws InterruptedException {
         //创建BossGroup,默认创建了2*cpu个子线程
@@ -34,16 +38,30 @@ public class NettyServer {
                     .option(ChannelOption.SO_BACKLOG, 128)//设置线程队列得到连接的个数
                     .childOption(ChannelOption.SO_KEEPALIVE, true)//设置保持活动连接状态
                     .childHandler(new ChannelInitializer<SocketChannel>() {//创建一个通道初始化对象
-                        //给pipeline设置处理器
                         @Override
-                        protected void initChannel(SocketChannel ch) throws Exception {
-                            ch.pipeline().addLast(new NettyServerHandler());
+                        protected void initChannel(SocketChannel socketChannel) throws Exception {
+                            //保存socketChannel等待后面推送任务使用
+                            userMap.put(socketChannel.remoteAddress().getHostName(),socketChannel);
+                            //给pipeline设置处理器
+                            socketChannel.pipeline().addLast(new NettyServerHandler());
                         }
                     });//给我们的workGroup的eventLoop对应的管道设置处理器
-            System.out.println("Server is ready...");
             //启动服务器并绑定端口
             //绑定一个端口,并且同步，生成一个ChannelFuture对象
             ChannelFuture channelFuture = serverBootstrap.bind(8888).sync();
+
+            //注册监听器,监听绑定端口结果
+            channelFuture.addListener(new ChannelFutureListener() {
+                @Override
+                public void operationComplete(ChannelFuture future) throws Exception {
+                    if(future.isSuccess()){
+                        System.out.println("Server启动成功！");
+                    }else {
+                        System.out.println("Server启动失败！");
+                    }
+                }
+            });
+
             //对关闭通道进行监听
             channelFuture.channel().closeFuture().sync();
         }finally {

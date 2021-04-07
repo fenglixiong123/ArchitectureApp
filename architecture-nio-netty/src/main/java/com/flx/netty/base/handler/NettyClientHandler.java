@@ -1,7 +1,8 @@
-package com.flx.netty.base;
+package com.flx.netty.base.handler;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
+import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.util.CharsetUtil;
@@ -34,8 +35,10 @@ public class NettyClientHandler extends ChannelInboundHandlerAdapter {
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         ByteBuf bf = (ByteBuf)msg;
-        System.out.println("From Server address : "+ctx.channel().remoteAddress());
-        System.out.println("From Server message : "+bf.toString(CharsetUtil.UTF_8));
+        Channel channel = ctx.channel();
+        String address = channel.remoteAddress().toString();
+        String message = bf.toString(CharsetUtil.UTF_8);
+        System.out.println("From Server ["+Thread.currentThread().getName()+"]"+":["+address+"]"+" say : ["+message+"]");
     }
 
     /**

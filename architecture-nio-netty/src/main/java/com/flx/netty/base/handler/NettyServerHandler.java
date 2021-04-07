@@ -1,10 +1,14 @@
-package com.flx.netty.base;
+package com.flx.netty.base.handler;
 
+import com.flx.netty.base.service.ServerService;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
+import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
+import io.netty.channel.ChannelPipeline;
 import io.netty.util.CharsetUtil;
+import lombok.extern.slf4j.Slf4j;
 
 import java.nio.charset.StandardCharsets;
 
@@ -13,22 +17,34 @@ import java.nio.charset.StandardCharsets;
  * @Author: Fenglixiong
  * @Date: 2021/4/6 21:30
  * @Description: 我们自定义一个handler
+ *
+ * 入站：相对于server来说，向server发送数据
+ * 出站：相对于server来说，接收server的数据
+ *
+ * |--->ChannelInboundHandler 用于处理入站IO事件
+ * |--->ChannelOutboundHandler 用于处理出站IO事件
  */
 public class NettyServerHandler extends ChannelInboundHandlerAdapter {
 
     /**
      * 读取客户端的数据
-     * @param ctx 上下文对象，含有管道pipeline,通道channel，地址
+     * @param ctx 上下文对象，
+     *            1.含有管道pipeline,
+     *            2.通道channel
      * @param msg 客户端发送的数据
      * @throws Exception
      */
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-        //将msg转换成一个ByteBuf
-        //ByteBuf是netty提供的
-        ByteBuf bf = (ByteBuf)msg;
-        System.out.println("From Client address : "+ctx.channel().remoteAddress());
-        System.out.println("From Client message : "+bf.toString(CharsetUtil.UTF_8));
+        //简单处理消息
+        //ServerService.simpleRead(ctx,msg);
+        //处理耗时任务
+        //ServerService.complexRead(ctx,msg);
+        //异步处理耗时任务
+        //ServerService.complexReadSyn(ctx,msg);
+        //异步定时处理耗时任务
+        ServerService.complexReadSynSchedule(ctx,msg);
+        System.out.println("I have read done!");
     }
 
     /**

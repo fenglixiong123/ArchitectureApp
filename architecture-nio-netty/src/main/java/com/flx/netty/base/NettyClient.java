@@ -1,5 +1,6 @@
 package com.flx.netty.base;
 
+import com.flx.netty.base.handler.NettyClientHandler;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
