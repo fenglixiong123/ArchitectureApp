@@ -21,6 +21,9 @@ public class NettyHttpServerInitializer extends ChannelInitializer<SocketChannel
         pipeline.addLast("MyHttpServerCode",new HttpServerCodec());
         //增加自定义处理器
         pipeline.addLast("MyNettyHttpServerHandler",new NettyHttpServerHandler());
+
+        System.out.println("initChannel ok ~");
+
     }
 
 }

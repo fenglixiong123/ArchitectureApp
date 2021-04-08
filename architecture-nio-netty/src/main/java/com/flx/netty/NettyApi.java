@@ -2,7 +2,6 @@ package com.flx.netty;
 
 import com.flx.netty.base.handler.NettyServerHandler;
 import io.netty.bootstrap.ServerBootstrap;
-import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.EventLoopGroup;
@@ -150,25 +149,105 @@ public class NettyApi {
     /**
      * 启动类
      *
-     * ChannelHandler 通道处理类
+     * Netty的主要组件有Channel、EventLoop、ChannelFuture、ChannelHandler、ChannelPipe等
+     *
+     *
+     * 1.ChannelHandler 通道处理类
+     *
+     * ChannelHandler充当了处理入站和出站数据的应用程序逻辑的容器。
+     * 例如，实现ChannelInboundHandler接口（或ChannelInboundHandlerAdapter），你就可以接收入站事件和数据，这些数据会被业务逻辑处理。
+     * 当要给客户端发送响应时，也可以从ChannelInboundHandler冲刷数据。业务逻辑通常写在一个或者多个ChannelInboundHandler中。
+     * ChannelOutboundHandler原理一样，只不过它是用来处理出站数据的
      *
      * 入站：相对于server来说，向server发送数据
      * 出站：相对于server来说，接收server的数据
      *
-     * |--->ChannelDuplexHandler 用于处理入站和出站IO事件
-     * |--->ChannelOutboundHandler 用于处理出站IO事件
-     * |--->ChannelInboundHandler 用于处理入站IO事件
-     *      |--->channelActive通道就绪事件
-     *      |--->channelRead通道读取事件
-     *      |--->channelReadComplete通道读取完成事件
-     *      |--->exceptionCaught通道发生异常事件
-     * 适配器
-     * |--->ChannelInboundHandlerAdapter 用于处理出站IO事件
-     * |--->ChannelOutboundHandlerAdapter 用于处理出站IO事件
+     * 相关实现类：
+     *      |--->ChannelDuplexHandler 用于处理入站和出站IO事件
+     *      |--->ChannelOutboundHandler 用于处理出站IO事件
+     *      |--->ChannelInboundHandler 用于处理入站IO事件
+     *           |--->channelActive通道就绪事件
+     *           |--->channelRead通道读取事件
+     *           |--->channelReadComplete通道读取完成事件
+     *           |--->exceptionCaught通道发生异常事件
+     *      适配器
+     *      |--->ChannelInboundHandlerAdapter 用于处理出站IO事件
+     *      |--->ChannelOutboundHandlerAdapter 用于处理出站IO事件
      *
-     * ChannelPipeline 通道处理器的容器
+     * 生命周期
      *
-     * 提供了ChannelHandler链的容器。读取数据称为入站，发送数据称为出站
+     *  -handlerAdded
+     *      -> channelRegistered
+     *              -> channelActive
+     *                      -> channelRead
+     *                      -> channelReadComplete
+     *              -> channelInactive
+     *       -> channelUnRegistered
+     *  -> handlerRemoved
+     *
+     * 2.ChannelHandlerContext
+     *
+     * 1)保存Channel相关的所有上下文信息，同时关联一个ChannelHandler对象
+     * 2)ChannelHandlerContext中包含一个具体的事件处理器ChannelHandler
+     *   同时ChannelHandlerContext中也绑定了对应的pipeline和Channel的信息，方便对ChannelHandler进行调用
+     *
+     * 相关方法：
+     *      |--->close() 关闭通道
+     *      |--->flush() 刷新
+     *      |--->writeAndFlush(Object msg) 将数据写到pipeline中当前的ChannelHandler的下一个ChannelHandler开始处理
+     *
+     * 3.ChannelPipeline 通道处理器的容器，是一个handler的集合
+     *
+     * 它负责处理和拦截inbound或者outbound的事件和操作，相当于一个netty链
+     * 也可以这样理解：ChannelPipeline是保存ChannelHandler的List，用于处理或者拦截Channel的入站和出站操作
+     * 提供了ChannelHandler链的容器。
+     *
+     * ChannelPipeline提供了ChannelHandler链的容器。
+     * 头部那一端为服务端，尾端为客户端。
+     * 1)客户端应用程序为例，如果事件的运动方向是从客户端到服务端的，那么我们称这些事件为出站的，即客户端发送给服务端的数据会通过pipeline中的一系列ChannelOutboundHandler，并被这些Handler处理，反之则称为入站的。
+     * 2)如果以服务端为例，出站就是事件的运动方向服务端到客户端，因为对服务端来说，数据是往外流出的，入站就是客户端到服务端。
+     *
+     * Netty中每个Channel都有且仅有一个ChannelPipeline与之对应
+     * 双向链表：
+     *              -------------------------Channel------------------------------
+     *              +-----------------------Pipeline-----------------------------+
+     *              +    head                                                tail+
+     *              + ----------     ----------     ----------      ----------   +
+     * Server <---> + -Handler - <-> -Handler - <-> -Handler -  <-> - Handler-   + <---> Client
+     *              + ----------     ----------     ----------      ----------   +
+     *              +HandlerContext HandlerContext HandlerContext HandlerContext +
+     *              +                                                            +
+     *              --------------------------------------------------------------
+     *
+     * (1)一个Channel包含一个ChannelPipeline，
+     *      而ChannelPipeline中又维护了一个由ChannelHandlerContext组成的双向链表
+     *      并且每个ChannelHandlerContext中又关联着一个ChannelHandler
+     * (2)入站和出站事件在一个双向链表中，
+     *      入站事件会从链表header往后传递到最后一个入站的handler，
+     *      出站事件会从链表tail往前传递到最前一个出站的handler，两种类型的handler互不干扰
+     *
+     *  举例NettyHttpServer：
+     *   pipeline中维护的双向队列中handler依次为：ChannelInitializer--->MyHttpServerCode--->MyNettyHttpServerHandler--->DefaultChannelPipeline$TailContext#0
+     *
+     * 4.EventLoopGroup(NioEventLoopGroup)
+     *
+     * 1)EventLoopGroup是一组EventLoop的抽象，Netty为了更好的利用多核CPU的资源，
+     *  一般会有多个EventLoop同时工作，每个EventLoop维护着一个Selector实例
+     * 2)EventLoopGroup提供next接口，可以从组里按照一定规则获取其中一个EventLoop来处理任务。
+     * 3)通常一个服务端口即一个ServerSocketChannel对应一个Selector和一个EventLoop线程。
+     *  BossGroup负责接收客户端的连接并将SocketChannel交给WorkGroup进行IO处理
+     *
+     * ChannelOption
+     *
+     * 1)ChannelOption.SO_BACKLOG 对应tcp/ip协议中的backlog参数，用来初始化服务器可连接队列大小。
+     *      服务端处理客户端连接请求是顺序处理的，所以同一时间只能处理一个客户端连接。多个客户端来的时候，服务端将不能处理的客户端连接
+     *      请求放在队列中等待，backlog参数制定了队列的大小
+     * 2)ChannelOption.SO_KEEPALIVE 一直保持连接活动状态
+     *
+     * Unpooled类
+     *
+     * 1)Netty提供的专门用来操作缓冲区的工具类
+     *  |--->copiedBuffer(string,charset) 通过给定的数据和编码返回一个buffer对象
      *
      */
     public void bootStrap() throws InterruptedException {
